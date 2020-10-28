@@ -18,7 +18,7 @@ def sftp_get4g():
 
    #get the file
    try:
-      with pysftp.Connection('10.54.18.23', username='transport', password='Transport2017#', cnopts=cnopts) as sftp:
+      with pysftp.Connection('host', username='user', password='password#', cnopts=cnopts) as sftp:
          with sftp.cd('output/RAW_DATA/DAILY_MONITORING'):             # temporarily chdir to public
             sftp.get(filename)  #get filename 
    except Exception as error:
@@ -37,7 +37,7 @@ def sftp_get4g_prev():
 
    #get the file
    try:
-      with pysftp.Connection('10.54.18.23', username='transport', password='Transport2017#', cnopts=cnopts) as sftp:
+      with pysftp.Connection('host', username='user', password='password#', cnopts=cnopts) as sftp:
          with sftp.cd('output/RAW_DATA/DAILY_MONITORING'):             # temporarily chdir to public
             sftp.get(filename)  #get filename 
    except Exception as error:
@@ -56,7 +56,7 @@ def sftp_get3g():
 
    #get the file
    try:
-      with pysftp.Connection('10.54.18.23', username='transport', password='Transport2017#', cnopts=cnopts) as sftp:
+      with pysftp.Connection('host', username='user', password='password#', cnopts=cnopts) as sftp:
          with sftp.cd('output/RAW_DATA/DAILY_MONITORING'):             # temporarily chdir to public
             sftp.get(filename)  #get filename 
    except Exception as error:
@@ -71,7 +71,7 @@ def export_sql4g():
    try:
       data = pd.read_csv(filename)
       df = pd.DataFrame(data)
-      engine = db.create_engine('mysql+pymysql://admin:admin2019@10.35.105.55:3306/sniff')
+      engine = db.create_engine('mysql+pymysql://user:pass@host/db')
       df.to_sql(name='4g_ftp', con=engine, if_exists='append', index=False)
    except IOError:
       print ("Targeted file with the name {} not found".format(filename))
@@ -84,7 +84,7 @@ def export_sql4g_prev():
    try:
       data = pd.read_csv(filename)
       df = pd.DataFrame(data)
-      engine = db.create_engine('mysql+pymysql://admin:admin2019@10.35.105.55:3306/sniff')
+      engine = db.create_engine('mysql+pymysql://user:password@host:3306/db')
       df.to_sql(name='4g_ftp', con=engine, if_exists='append', index=False)
    except IOError:
       print ("Targeted file with the name "+filename+" is not found")
@@ -97,7 +97,7 @@ def export_sql3g():
    try:
       data = pd.read_csv(filename)
       df = pd.DataFrame(data)
-      engine = db.create_engine('mysql+pymysql://admin:admin2019@10.35.105.55:3306/sniff')
+      engine = db.create_engine('mysql+pymysql://user:password@host:3306/db')
       df.to_sql(name='3g_ftp', con=engine, if_exists='append', index=False)
    except IOError:
       print ("Targeted file with the name "+filename+" is not found")
@@ -110,16 +110,16 @@ def export_sql3g_prev():
    try:
       data = pd.read_csv(filename)
       df = pd.DataFrame(data)
-      engine = db.create_engine('mysql+pymysql://admin:admin2019@10.35.105.55:3306/sniff')
+      engine = db.create_engine('mysql+pymysql://user:password@host:3306/db')
       df.to_sql(name='3g_ftp', con=engine, if_exists='append', index=False)
    except IOError:
       print ("Targeted file with the name "+filename+" is not found")
 
 def mysql_conn():
-   mysql_conn = pymysql.connect(host='10.35.105.55',
-               user ='admin',
-               password = 'admin2019',
-               db='sniff',
+   mysql_conn = pymysql.connect(host='host',
+               user ='userr',
+               password = 'password',
+               db='db',
                charset='utf8',
                cursorclass=pymysql.cursors.DictCursor)
    return(mysql_conn)
@@ -135,7 +135,7 @@ def sftp_hour4g():
 
    #get the file
    try:
-      with pysftp.Connection('10.54.18.23', username='transport', password='Transport2017#', cnopts=cnopts) as sftp:
+      with pysftp.Connection('host', username='user', password='password', cnopts=cnopts) as sftp:
          with sftp.cd('output/RAW_DATA/NATION_DAILY'):             # temporarily chdir to public
             sftp.get(filename)  #get filename 
    except Exception as error:
@@ -168,7 +168,7 @@ def export_sql_hr4g_v2():
       df['avg_pl']=pd.to_numeric(df['avg_pl'], errors='coerce')
       df['max_pl']=pd.to_numeric(df['max_pl'], errors='coerce')
       df['min_pl']=pd.to_numeric(df['min_pl'], errors='coerce')
-      engine = db.create_engine('mysql+pymysql://admin:admin2019@10.35.105.55:3306/sniff')
+      engine = db.create_engine('mysql+pymysql://user:pass@host:3306/db')
       df.to_sql(name='temp_table', con=engine, if_exists='append', index=False)
       with engine.begin() as cnx:
          insert_sql = "INSERT IGNORE INTO tbl_hourly (SELECT * FROM temp_table)"
@@ -190,7 +190,7 @@ def sftp_hour4g_prev():
 
    #get the file
    try:
-      with pysftp.Connection('10.54.18.23', username='transport', password='Transport2017#', cnopts=cnopts) as sftp:
+      with pysftp.Connection('host', username='user', password='pass', cnopts=cnopts) as sftp:
          with sftp.cd('output/RAW_DATA/NATION_DAILY'):             # temporarily chdir to public
             sftp.get(filename)  #get filename 
    except Exception as error:
@@ -208,7 +208,7 @@ def export_sql_hr4g_prev2():
       df['avg_pl']=pd.to_numeric(df['avg_pl'], errors='coerce')
       df['max_pl']=pd.to_numeric(df['max_pl'], errors='coerce')
       df['min_pl']=pd.to_numeric(df['min_pl'], errors='coerce')
-      engine = db.create_engine('mysql+pymysql://admin:admin2019@10.35.105.55:3306/sniff',pool_size=20, max_overflow=20)
+      engine = db.create_engine('mysql+pymysql://user:pass@host:3306/db',pool_size=20, max_overflow=20)
       df.to_sql(name='temp_table', con=engine, if_exists='append', index=False)
       with engine.begin() as cnx:
          insert_sql = "INSERT IGNORE INTO tbl_hourly (SELECT * FROM temp_table)"
