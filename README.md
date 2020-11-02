@@ -1,8 +1,11 @@
 # plbroadcastbot
-Bot for automatic KPI monitoring
+Telegram Bot for automatic KPI monitoring
 
 Background
-
+- Single concurrent user to access OSS server
+- Manual data extraction/export from the server
+- No persistent database (data usually compiled by an OSS engineer as a one-week period of measurement of KPI in excel format)
+- No automatic management reporting
 
 Features of these bot :
 - Aggregate daily data to display TWAMP Performance KPI
@@ -14,4 +17,5 @@ Python Library used :
 - pymysql
 - matplotlib
 - python-telegram-bot
+- pysftp
 
